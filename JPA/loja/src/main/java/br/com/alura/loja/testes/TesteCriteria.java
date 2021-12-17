@@ -1,46 +1,35 @@
 package br.com.alura.loja.testes;
 
 import java.math.BigDecimal;
-import java.util.List;
+import java.time.LocalDate;
 
 import javax.persistence.EntityManager;
 
 import br.com.alura.loja.dao.CategoriaDao;
 import br.com.alura.loja.dao.ProdutoDao;
 import br.com.alura.loja.modelo.Categoria;
-import br.com.alura.loja.modelo.CategoriaId;
 import br.com.alura.loja.modelo.Produto;
 import br.com.alura.loja.util.JPAUtil;
 
-public class CadastroDeProduto {
-	
+public class TesteCriteria {
+
 	public static void main(String[] args) {
-		cadastrarProduto();
+		popularBancoDeDados();
 		
 		EntityManager em = JPAUtil.getEntityManager();
 		ProdutoDao produtoDao = new ProdutoDao(em);
-		
-		Produto p= produtoDao.buscarPorId(1l);
-		System.out.println(p.getPreco());
-		
-		List<Produto> todos = produtoDao.buscarTodos();
-		todos.forEach(p2 -> System.out.println(p.getNome()));
-		
-		todos = produtoDao.buscarPorNome("Xiaomi Redmi");
-		todos.forEach(p2 -> System.out.println(p.getNome()));
-		
-		todos = produtoDao.buscarPorNomeDaCategoria("CELULARES");
-		todos.forEach(p2 -> System.out.println(p.getNome()));
-		
-		BigDecimal precoDoProduto = produtoDao.buscarPrecoDoProdutoComNome("Xiaomi Redmi");
-		System.out.println("Preço do produto: " + precoDoProduto);
+		produtoDao.buscarPorParametrosComCriteria(null, null, LocalDate.now());
 	}
-
-	private static void cadastrarProduto() {
+	
+	private static void popularBancoDeDados() {
 		Categoria celulares = new Categoria("CELULARES");
-		
+		Categoria videogames = new Categoria("VIDEOGAMES");
+		Categoria informatica = new Categoria("INFORMATICA");
 		
 		Produto celular = new Produto("Xiaomi Redmi", "Muito legal", new BigDecimal("800"), celulares);
+		Produto videogame = new Produto("PS5", "Playstation 5 ", new BigDecimal("4200"), celulares);
+		Produto macbook= new Produto("Macbook", "Macbook pro", new BigDecimal("7000"), celulares);
+		
 		
 		EntityManager em = JPAUtil.getEntityManager();
 		
@@ -50,13 +39,15 @@ public class CadastroDeProduto {
 		em.getTransaction().begin();
 		
 		categoriaDao.cadastrar(celulares);
+		categoriaDao.cadastrar(videogames);
+		categoriaDao.cadastrar(informatica);
+		
 		produtoDao.cadastrar(celular);
+		produtoDao.cadastrar(videogame);
+		produtoDao.cadastrar(macbook);
 		
 		em.getTransaction().commit();
-		
-		em.find(Categoria.class, new CategoriaId("CELULARES", "xpto"));
-		
 		em.close();
 	}
-	
+
 }
