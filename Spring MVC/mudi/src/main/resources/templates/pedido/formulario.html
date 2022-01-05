@@ -7,11 +7,12 @@
 			<div th:replace="~{base :: titulo('Novo Pedido')}"></div>
 			
 			<div class="card mt-3">
-				<!-- Object deve ser nome da classe mas começando por minusculo. E deve ter um parâmetro do tipo da classe no objeto que redireciona pro html -->
-				<form th:object="${requisicaoNovoPedido}" class="card-body" action="/pedido/novo" method="POST">
+				<!-- Object deve ser nome da classe mas comeï¿½ando por minusculo. E deve ter um parï¿½metro do tipo da classe no objeto que redireciona pro html -->
+				<!--  th:action adiciona contexto automaticamente -->
+				<form th:object="${requisicaoNovoPedido}" class="card-body" th:action="@{/pedido/novo}" method="POST">
 					<div class="form-group">
 						<label for="nomeProduto">Produto</label>
-						<!-- Por causa do th:field, não precisa do atributo name, pois é o mesmo nome do atributo da classe -->
+						<!-- Por causa do th:field, nï¿½o precisa do atributo name, pois ï¿½ o mesmo nome do atributo da classe -->
 						<input th:field="*{nomeProduto}" class="form-control" th:errorclass="is-invalid" placeholder="nome do produto"/>
 						<small>Informe qual o nome do produto.</small>
 						<div class="invalid-feedback" th:errors="*{nomeProduto}">
@@ -21,7 +22,7 @@
 					<div class="form-group">
 						<label for="urlProduto">Url</label>
 						<input th:field="*{urlProduto}" class="form-control" th:errorclass="is-invalid" placeholder="url do produto"/>
-						<small>Procure em um site o produto que você deseja e cole a url aqui.</small>
+						<small>Procure em um site o produto que vocï¿½ deseja e cole a url aqui.</small>
 						<div class="invalid-feedback" th:errors="*{urlProduto}">
 							Erros da url do produto
 						</div>
